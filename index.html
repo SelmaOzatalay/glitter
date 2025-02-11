@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
 
-    <title>My page title</title>
+    <title>Glitter effect</title>
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Sonsie+One"
       rel="stylesheet" />
@@ -13,93 +13,88 @@
 
   <body>
     <canvas id="bg-canvas"></canvas>
+    <nav>
+      <button onclick="setColor('blue')" data-color="blue" class="button-blue selected">blue</button>
+      <button onclick="setColor('pink')" data-color="pink" class="button-pink">pink</button>
+      <button onclick="setColor('green')" data-color="green" class="button-green">green</button>
+      <!-- <p>
+        Current color: <span id="current-color">blue</span>
+      </p> -->
+    </nav>
+    <main>
+      <h1>Glitter !</h1>
+    </main>
     <canvas id="sparkles-canvas"></canvas>
   </body>
   <script>
 
+    let currentColor = 'blue'
+    const buttons = document.getElementsByTagName('nav')[0].getElementsByTagName('button')
+    
+
+    function setColor(color) {
+      console.log(color)
+      const colorWrapper = document.getElementById('current-color');
+      currentColor = color;
+      console.log(buttons)
+      for (let i = 0; i <= buttons.length; i++) {
+        buttons[i].classList.remove('selected')
+        // if (buttons[i].classList)
+      }
+      // colorWrapper.innerHTML = color;
+    }
+
     function getRandomInt(max) {
       return Math.floor(Math.random() * max);
     }
-    // function draw() {
-    //     const canvas = document.getElementById("particle-canvas");
-    //     if (canvas.getContext) {
-    //         const ctx = canvas.getContext("2d");
-    //         const [w,h] = [window.innerWidth, window.innerHeight]
-    //         const nbParticles = 50;
-
-    //         ctx.canvas.width  = w;
-    //         ctx.canvas.height = h;
-
-    //         for (let i = 0; i < nbParticles; i++) {
-    //             for (let j = 0; j < nbParticles; j++) {
-    //               const randomNb = getRandomInt(9);
-    //               // ctx.fillRect(j*(w/nbParticles), i*(w/nbParticles), 2, 2);
 
 
-    //               setTimeout(()=>{
-    //                 ctx.fillRect(j*(w/nbParticles), i*(w/nbParticles), 2, 2);
-    //               },randomNb*100)
+    function drawBg() {
 
+      const canvas = document.getElementById("bg-canvas");
 
-    //               setTimeout(()=>{
-    //                 ctx.clearRect(j*(w/nbParticles), i*(w/nbParticles), 2, 2);
-    //               },randomNb*100)
+      if (canvas.getContext) {
 
+        const ctx = canvas.getContext("2d");
+        const [w,h] = [window.innerWidth, window.innerHeight]
+        const nbParticles = window.innerWidth*100;
 
-    //               console.log(i,j,randomNb)
-    //             }
-    //         }
+        ctx.canvas.width  = w;
+        ctx.canvas.height = h;
 
-    //     }
-    // }
+        const gradient = ctx.createLinearGradient(0, 0, w, h);
 
-        function drawBg() {
+        gradient.addColorStop(0, "#012452");
+        gradient.addColorStop(0.25, "#0259a1");
+        gradient.addColorStop(0.5, "#012452");
+        gradient.addColorStop(0.75, "#0259a1");
+        gradient.addColorStop(1, "#012452");
 
-        const canvas = document.getElementById("bg-canvas");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
 
-        if (canvas.getContext) {
-
-          const ctx = canvas.getContext("2d");
-          const [w,h] = [window.innerWidth, window.innerHeight]
-          const nbParticles = window.innerWidth*100;
-
-          ctx.canvas.width  = w;
-          ctx.canvas.height = h;
-
-          const gradient = ctx.createLinearGradient(0, 0, w, h);
-
-// Add three color stops
-gradient.addColorStop(0, "#25517d");
-gradient.addColorStop(0.25, "#0b6ebf");
-gradient.addColorStop(0.5, "#25517d");
-gradient.addColorStop(0.75, "#0b6ebf");
-gradient.addColorStop(1, "#25517d");
-
-          ctx.fillStyle = gradient;
-          ctx.fillRect(0, 0, w, h);
-
-          for (var i = 0; i < nbParticles; i++) {
-            const randomX = getRandomInt(w);
-            const randomY = getRandomInt(h);
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(randomX, randomY, 1, 1);
-          }
-
-          for (var i = 0; i < nbParticles; i++) {
-            const randomX = getRandomInt(w);
-            const randomY = getRandomInt(h);
-            ctx.fillStyle = '#0080ff';
-            ctx.fillRect(randomX, randomY, 1, 1);
-          }
-
-          for (var i = 0; i < nbParticles; i++) {
-            const randomX = getRandomInt(w);
-            const randomY = getRandomInt(h);
-            ctx.fillStyle = 'rgba(125, 229, 250, 0.2)';
-            ctx.fillRect(randomX, randomY, 2, 2);
-          }           
-
+        for (var i = 0; i < nbParticles; i++) {
+          const randomX = getRandomInt(w);
+          const randomY = getRandomInt(h);
+          ctx.fillStyle = 'blue';
+          ctx.fillRect(randomX, randomY, 1, 1);
         }
+
+        for (var i = 0; i < nbParticles; i++) {
+          const randomX = getRandomInt(w);
+          const randomY = getRandomInt(h);
+          ctx.fillStyle = '#0080ff';
+          ctx.fillRect(randomX, randomY, 1, 1);
+        }
+
+        for (var i = 0; i < nbParticles; i++) {
+          const randomX = getRandomInt(w);
+          const randomY = getRandomInt(h);
+          ctx.fillStyle = 'rgba(125, 229, 250, 0.2)';
+          ctx.fillRect(randomX, randomY, 2, 2);
+        }           
+
+      }
     }
 
     function drawSparkles() {
@@ -107,6 +102,7 @@ gradient.addColorStop(1, "#25517d");
         const canvas = document.getElementById("sparkles-canvas");
 
         if (canvas.getContext) {
+
             const ctx = canvas.getContext("2d");
             const [w,h] = [window.innerWidth, window.innerHeight]
             const nbParticles = 500;
@@ -115,15 +111,12 @@ gradient.addColorStop(1, "#25517d");
             ctx.canvas.height = h;
 
             setInterval(()=>{
-              // for (var i = 0; i<nbParticles; i++) {
 
                 const randomX = getRandomInt(w);
                 const randomY = getRandomInt(h);
                 ctx.fillStyle = 'white';
 
                 ctx.fillRect(randomX, randomY, 1, 1);
-
-                  // console.log(randomX)
 
                   const randomX2 = getRandomInt(w);
                   const randomY2 = getRandomInt(h);
@@ -142,18 +135,11 @@ gradient.addColorStop(1, "#25517d");
                   ctx.clearRect(randomX2, randomY2, 2, 2);
                   ctx.clearRect(randomX3, randomY3, 3, 3);
                 },1000)
-              // }
 
             },1)
 
         }
     }
-
-    let debut, tempsPrecedent;
-    let randomX, randomY;
-    let randomX2, randomY2;
-    let fini = false;
-
 
     window.addEventListener("load", ()=>{
       drawBg();
