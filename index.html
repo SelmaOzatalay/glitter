@@ -13,35 +13,70 @@
 
   <body>
     <canvas id="bg-canvas"></canvas>
-    <nav>
-      <button onclick="setColor('blue')" data-color="blue" class="button-blue selected">blue</button>
-      <button onclick="setColor('pink')" data-color="pink" class="button-pink">pink</button>
-      <button onclick="setColor('green')" data-color="green" class="button-green">green</button>
-      <!-- <p>
-        Current color: <span id="current-color">blue</span>
-      </p> -->
-    </nav>
-    <main>
-      <h1>Glitter !</h1>
-    </main>
     <canvas id="sparkles-canvas"></canvas>
+    <div class="container">
+      <!-- <header>
+        <h1>Glitter Mag</h1>
+        <div class="right-container">
+          <span class="number">#1</span>
+          <nav>
+            <button onclick="setColor('blue')" data-color="blue" class="button-blue selected">blue</button>
+            <button onclick="setColor('pink')" data-color="pink" class="button-pink">pink</button>
+            <button onclick="setColor('green')" data-color="green" class="button-green">green</button>
+          </nav>
+        </div>
+      </header> -->
+      <nav>
+        <p>Change glitter color</p>
+        <button onclick="setColor('blue')" data-color="blue" class="button-blue selected">&nbsp;</button>
+        <button onclick="setColor('pink')" data-color="pink" class="button-pink">&nbsp;</button>
+        <button onclick="setColor('green')" data-color="green" class="button-green">&nbsp;</button>
+      </nav>
+      <main>
+        <h1>Glitter is the confetti of the universe,<br/> a tiny, sparkly rebellion against organization.</h1>
+        <p><span>"</span> You think you’ve cleaned it up, but the next morning, it’s like it’s plotting its return, appearing in places you never even knew existed. <br/> It’s the herpes of the craft world—once it’s there, it never truly leaves. <br/>You might think you’re just adding a little sparkle to your life, but now your car seat is a disco ball and your dog looks like it got hired for a role in the next *Trolls* movie. <br/>You can never have too much glitter... but you definitely will have too much glitter. <span>"</span></p>
+      </main>
+    </div>
   </body>
   <script>
 
-    let currentColor = 'blue'
+    let currentColor = 'pink'
+    const colorsSchemes = {
+      blue:{
+        bgGradient1: '#000',
+        bgGradient2: '#0259a1',
+        particles1: '#0356fc',
+        particles2: '#0080ff',
+        particles3: 'rgba(125, 229, 250, 0.3)'
+      },
+      pink:{
+        bgGradient1: '#63064e',
+        bgGradient2: '#c20c97',
+        particles1: '#fc03b5',
+        particles2: '#fc5dc5',
+        particles3: 'rgba(252, 136, 247, 0.3)'
+      },
+      green:{
+        bgGradient1: '#000',// very dark color
+        bgGradient2: '#0259a1', // dark color
+        particles1: '#0356fc', //flashy color
+        particles2: '#0080ff',//flashy lighter color
+        particles3: 'rgba(125, 229, 250, 0.3)'// light color
+      }
+    }
+    
     const buttons = document.getElementsByTagName('nav')[0].getElementsByTagName('button')
     
 
     function setColor(color) {
-      console.log(color)
-      const colorWrapper = document.getElementById('current-color');
       currentColor = color;
-      console.log(buttons)
-      for (let i = 0; i <= buttons.length; i++) {
+      for (let i = 0; i < buttons.length; i++) {
         buttons[i].classList.remove('selected')
-        // if (buttons[i].classList)
+        if (buttons[i].dataset.color === color) {
+          buttons[i].classList.add('selected')
+        }
       }
-      // colorWrapper.innerHTML = color;
+      drawBg();
     }
 
     function getRandomInt(max) {
@@ -64,11 +99,11 @@
 
         const gradient = ctx.createLinearGradient(0, 0, w, h);
 
-        gradient.addColorStop(0, "#012452");
-        gradient.addColorStop(0.25, "#0259a1");
-        gradient.addColorStop(0.5, "#012452");
-        gradient.addColorStop(0.75, "#0259a1");
-        gradient.addColorStop(1, "#012452");
+        gradient.addColorStop(0, colorsSchemes[currentColor].bgGradient1);
+        gradient.addColorStop(0.25, colorsSchemes[currentColor].bgGradient2);
+        gradient.addColorStop(0.5, colorsSchemes[currentColor].bgGradient1);
+        gradient.addColorStop(0.75, colorsSchemes[currentColor].bgGradient2);
+        gradient.addColorStop(1, colorsSchemes[currentColor].bgGradient1);
 
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, w, h);
@@ -76,23 +111,31 @@
         for (var i = 0; i < nbParticles; i++) {
           const randomX = getRandomInt(w);
           const randomY = getRandomInt(h);
-          ctx.fillStyle = 'blue';
+          ctx.fillStyle = colorsSchemes[currentColor].particles1;
           ctx.fillRect(randomX, randomY, 1, 1);
         }
 
         for (var i = 0; i < nbParticles; i++) {
           const randomX = getRandomInt(w);
           const randomY = getRandomInt(h);
-          ctx.fillStyle = '#0080ff';
+          ctx.fillStyle = colorsSchemes[currentColor].particles2;
           ctx.fillRect(randomX, randomY, 1, 1);
         }
 
         for (var i = 0; i < nbParticles; i++) {
           const randomX = getRandomInt(w);
           const randomY = getRandomInt(h);
-          ctx.fillStyle = 'rgba(125, 229, 250, 0.2)';
+          ctx.fillStyle = colorsSchemes[currentColor].particles3;
           ctx.fillRect(randomX, randomY, 2, 2);
-        }           
+        } 
+        
+        for (var i = 0; i < nbParticles / 20; i++) {
+          const randomX = getRandomInt(w);
+          const randomY = getRandomInt(h);
+          ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+          ctx.fillRect(randomX, randomY, 1, 1);
+        } 
+        
 
       }
     }
@@ -112,11 +155,11 @@
 
             setInterval(()=>{
 
-                const randomX = getRandomInt(w);
-                const randomY = getRandomInt(h);
-                ctx.fillStyle = 'white';
+                // const randomX = getRandomInt(w);
+                // const randomY = getRandomInt(h);
+                // ctx.fillStyle = 'white';
 
-                ctx.fillRect(randomX, randomY, 1, 1);
+                // ctx.fillRect(randomX, randomY, 1, 1);
 
                   const randomX2 = getRandomInt(w);
                   const randomY2 = getRandomInt(h);
@@ -130,11 +173,27 @@
 
                   ctx.fillRect(randomX3, randomY3, 3, 3);
 
+                  const randomX5 = getRandomInt(w);
+                  const randomY5 = getRandomInt(h);
+
+                  // const gradient = ctx.createRadialGradient(0, 0, 5, 5, 5, 5);
+                  // gradient.addColorStop(0, rgba(255,255,255,1));
+                  // gradient.addColorStop(1, rgba(255,255,255,0));
+                  // ctx.fillStyle = gradient;
+                  ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+
+                  // ctx.fillRect(randomX5, randomY5, 5, 5);
+                  ctx.beginPath();
+                  ctx.arc(randomX5, randomY5, 2.5, 0, 2 * Math.PI);
+                  // ctx.stroke();
+                  ctx.fill()
+
                 setTimeout(()=>{
-                  ctx.clearRect(randomX, randomY, 1, 1);
+                  // ctx.clearRect(randomX, randomY, 1, 1);
                   ctx.clearRect(randomX2, randomY2, 2, 2);
                   ctx.clearRect(randomX3, randomY3, 3, 3);
-                },1000)
+                  ctx.clearRect(randomX5-2.5, randomY5-2.5, 5.5, 5.5);
+                },500)
 
             },1)
 
@@ -142,7 +201,7 @@
     }
 
     window.addEventListener("load", ()=>{
-      drawBg();
+      setColor(currentColor);
       window.requestAnimationFrame(drawSparkles)
     });
   </script>
